@@ -16,8 +16,11 @@ curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_VERBOSE, $debug);
 curl_setopt($ch, CURLOPT_POSTFIELDS, array(
     'login' => $login,
-    'image' => '@' . $filePath,
+    'image' => new CURLFile($filePath), // или new CURLFile(realpath($filePath))
     'sign' => $sign
+));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    "Content-Type:multipart/form-data"
 ));
 $result = json_decode(curl_exec($ch), true);
 curl_close($ch);
